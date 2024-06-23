@@ -18,10 +18,10 @@ const { encrypt, decrypt } = require('./Encryption');
 const mysql = require("mysql2/promise");
 
 const db = mysql.createPool({
-    user: 'root',
-    host: 'localhost',
-    password: 'Armaan@016',
-    database: 'passwordmanager'
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 app.post("/addpassword", (req, res) => {

@@ -29,6 +29,10 @@ const Home = () => {
     }, [username]);
 
     const addPassword = async () => {
+        if (!password) {
+            toast.error("Please enter a password");
+            return;
+        }
         toast.success("Adding password...");
         Axios.post('/addpassword', { password: password, website: website, username: username });
         const response = await Axios.post('/getpasswords', { username: username });
@@ -57,7 +61,7 @@ const Home = () => {
                 <h2 className='passwords-title' style={{ color: 'green ' }}>Add Password</h2>
                 <input type="text" value={website} placeholder="Enter the website here" onChange={(e) => { setWebsite(e.target.value) }} />
                 <input type="password" value={password} placeholder="Enter the password here" onChange={(e) => { setPassword(e.target.value) }} />
-                <button type="button" className='form-submit-buttons' onClick={addPassword}>Save Password</button>
+                <button type="button" className='form-submit-buttons' onClick={() => addPassword()}>Save Password</button>
             </div>
 
             <div className='passwords'>
