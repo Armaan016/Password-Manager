@@ -56,6 +56,17 @@ app.post("/decryptpassword", (req, res) => {
     res.send(decrypt(req.body));
 });
 
+app.post("/deletepassword", async (req, res) => {
+    const { id } = req.body;
+    try {
+        await db.query("DELETE FROM passwords WHERE id = ?", [id]);
+        res.send("Password deleted successfully");
+    } catch (error) {
+        console.error("Error deleting password", error);
+        res.status(500).send("Error deleting password");
+    }
+});
+
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
     console.log(username, password);

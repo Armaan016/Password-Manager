@@ -4,6 +4,8 @@ import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
     const [website, setWebsite] = useState("");
@@ -37,6 +39,8 @@ const Home = () => {
         Axios.post('/addpassword', { password: password, website: website, username: username });
         const response = await Axios.post('/getpasswords', { username: username });
         setPasswordList(response.data);
+        setWebsite("");
+        setPassword("");
     };
 
     const decryptPassword = (encryption) => {
@@ -54,6 +58,17 @@ const Home = () => {
         }
     };
 
+    const deletePassword = async (id) => {
+        try {
+            await Axios.post('http://localhost:5000/deletepassword', { id: id })
+            toast.success("Password deleted successfully!");
+            const response = await Axios.post('/getpasswords', { username: username });
+            setPasswordList(response.data);
+        } catch (error) {
+            console.error("Error deleting password", error);
+            toast.error("Error deleting password");
+        }
+    };
 
     return (
         <div className="App">
@@ -69,8 +84,11 @@ const Home = () => {
                 {passwordList && passwordList.map((val, key) => {
                     const currentView = viewState[val.id] || 'website';
                     return (
-                        <div className='password' onClick={() => { decryptPassword({ password: val.password, iv: val.iv, id: val.id }) }} key={key}>
-                            <h3>{currentView === 'website' ? val.website : val.decryptedPassword}</h3>
+                        <div className='password-container'>
+                            <div className='password' onClick={() => { decryptPassword({ password: val.password, iv: val.iv, id: val.id }) }} key={key}>
+                                <h3>{currentView === 'website' ? val.website : val.decryptedPassword}</h3>
+                            </div>
+                            <FontAwesomeIcon className='delete-icon' icon={faTrash} onClick={() => deletePassword(val.id)} style={{ marginLeft: '10px', cursor: 'pointer' }} />
                         </div>
                     );
                 })}

@@ -170,3 +170,22 @@ button {
 .navigate-link {
   font-size: 34px;
 }
+
+.password-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  margin-bottom: 10px;
+  /* border-radius: 5px; */
+}
+/* 
+.password-container:hover {
+  background-color: #f0f0f0;
+} */
+
+.delete-icon {
+  cursor: pointer;
+  color: red;
+}
